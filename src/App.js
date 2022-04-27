@@ -1,8 +1,8 @@
-
+import FileUpload from "./component/FileUpload"
 function App() {
   return (
-    <div>
-      <p className="text-4xl text-center text-cyan-200">helloe</p>
+    <div className="container flex items-center justify-center h-screen">
+      <FileUpload/>
      
     </div>
   );
