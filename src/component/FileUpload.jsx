@@ -34,7 +34,8 @@ export default function FileUpload() {
             Size in bytes : {selectedFile.size}
           </p>
           <p className="text-gray-500 font-bold font-mono italic ">
-            Last Modifed Date : {selectedFile.lastModified.toLocaleDateString()}
+            Last Modifed Date :{" "}
+            {new Date(selectedFile.lastModified).toLocaleDateString()}
           </p>
         </div>
       ) : (
