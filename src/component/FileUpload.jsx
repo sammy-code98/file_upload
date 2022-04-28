@@ -11,6 +11,26 @@ export default function FileUpload() {
     console.log("chnage");
   };
   const handleSubmit = () => {
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    fetch(
+      "https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("succes:", data);
+      })
+      .catch((err) => {
+        console.log("err:", err);
+      });
     console.log("submit");
   };
   return (
