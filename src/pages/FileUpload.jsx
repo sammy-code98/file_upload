@@ -47,7 +47,7 @@ export default function FileUpload() {
           <input
             type="file"
             name="file"
-            className="border border-blue-700 mb-12  px-4 py-2  rounded-md md:px-12"
+            className="border border-blue-700 mb-12  px-4 py-2 font-mono text-gray-500 rounded-md md:px-12"
             onChange={changeHandler}
           />
           {isFilePicked ? (
