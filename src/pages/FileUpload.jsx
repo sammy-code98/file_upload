@@ -38,7 +38,7 @@ export default function FileUpload() {
     <>
         <Link
           to="/"
-          className="bg-blue-700 text-white md:px-12 py-2 rounded-md font-mono font-bold float-right mt-4 mx-4"
+          className="bg-blue-700 text-white px-2 md:px-12 py-2 rounded-md font-mono font-bold float-right mt-4 mx-4"
         >
           Go Home{" "}
         </Link>

@@ -1,26 +1,59 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+
+const imageType = /image\/(png|jpg|jpeg)/gm;
 export default function DisplayUpload() {
-  // create state and set to empty array
+  const [imageFiles, setImageFiles] = useState([]);
   const [images, setImages] = useState([]);
 
-  const [imageUrl, setImageUrl] = useState([]);
-
-  useEffect(() => {
-    // image.length < 1
-    if (images.length !== 0) return;
-
-    const newImageUrls = [];
-    images.forEach((image) => newImageUrls.push(URL.createObjectURL(image[0])));
-    setImageUrl(newImageUrls);
-
-  }, [images]);
-  console.log("newarr:", images);
-
-
   const onChangeHandler = (e) => {
-    setImages([...e.target.files]);
+    const { files } = e.target;
+
+    const validImageFiles = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (file.type.match(imageType)) {
+        validImageFiles.push(file);
+      }
+    }
+    if (validImageFiles.length) {
+      setImageFiles(validImageFiles);
+      return;
+    }
+    alert("selected image file are not valid type");
   };
+  useEffect(() => {
+    const images = [];
+    const fileReaders = [];
+    let isCancel = false;
+    if (imageFiles.length) {
+      imageFiles.forEach((file) => {
+        const fileReader = new FileReader();
+        fileReaders.push(fileReader);
+
+        fileReader.onload = (e) => {
+          const { result } = e.target;
+          if (result) {
+            images.push(result);
+          }
+          if (images.length === imageFiles.length && !isCancel) {
+            setImages(images);
+          }
+        };
+        fileReader.readAsDataURL(file);
+      });
+    }
+    return () => {
+      isCancel = true
+      fileReaders.forEach(fileReader =>{
+        if(fileReader.readyState === 1){
+          fileReader.abort()
+        }
+      })
+    }
+  },[imageFiles]);
+
   return (
     <>
       <Link
@@ -30,27 +63,29 @@ export default function DisplayUpload() {
         Go Home{" "}
       </Link>
       <div className="h-screen">
-      <div className="container flex items-center justify-center ">
-        <input
-          className="border border-blue-700 mb-12 mt-24  px-4 py-2  font-mono text-gray-500 rounded-md md:px-12"
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={onChangeHandler}
-        />
-
-        
-      </div>
-      <div className="border border-blue-700  mb-12 mx-12 py-2">
-          {/* {images.map((image) => <p>{image.name}</p>)} */}
-          {imageUrl.map((imageSrc) => (
-          <img src={imageSrc}  alt="dummy"/>
-        ))}
-        
-
+        <div className="container flex items-center justify-center ">
+          <input
+            className="border border-blue-700 mb-12 mt-24  px-4 py-2  font-mono text-gray-500 rounded-md md:px-12"
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={onChangeHandler}
+          />
         </div>
+        {/* <div className="border border-blue-700  mb-12 mx-12 py-2">
+          hehehe
+        </div> */}
+         {
+        images.length > 0 ?
+          <div>
+            {
+              images.map((image, idx) => {
+                return <p key={idx}> <img src={image} alt="" /> </p>
+              })
+            }
+          </div> : null
+      }
       </div>
-      
     </>
   );
 }
