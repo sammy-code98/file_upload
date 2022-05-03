@@ -45,14 +45,14 @@ export default function DisplayUpload() {
       });
     }
     return () => {
-      isCancel = true
-      fileReaders.forEach(fileReader =>{
-        if(fileReader.readyState === 1){
-          fileReader.abort()
+      isCancel = true;
+      fileReaders.forEach((fileReader) => {
+        if (fileReader.readyState === 1) {
+          fileReader.abort();
         }
-      })
-    }
-  },[imageFiles]);
+      });
+    };
+  }, [imageFiles]);
 
   return (
     <>
@@ -72,19 +72,22 @@ export default function DisplayUpload() {
             onChange={onChangeHandler}
           />
         </div>
-        {/* <div className="border border-blue-700  mb-12 mx-12 py-2">
-          hehehe
-        </div> */}
-         {
-        images.length > 0 ?
-          <div>
-            {
-              images.map((image, idx) => {
-                return <p key={idx}> <img src={image} alt="" /> </p>
-              })
-            }
-          </div> : null
-      }
+
+        {images.length > 0 ? (
+          <div className="md:grid md:grid-cols-3 md:gap-4 p-4">
+            {images.map((image, idx) => {
+              return (
+                <div
+                  className="border border-blue-700 mb-4 rounded-md shadow-lg"
+                  key={idx}
+                >
+                  {" "}
+                  <img className="p-2" src={image} alt="" />{" "}
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
       </div>
     </>
   );
